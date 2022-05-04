@@ -1,6 +1,7 @@
 import Bookshelf from "./Bookshelf";
+import PropTypes from "prop-types";
 
-const ListBooks = () => {
+const ListBooks = ({ books }) => {
   return (
     <div className="list-books">
       <div className="list-books-title">
@@ -8,9 +9,9 @@ const ListBooks = () => {
       </div>
       <div className="list-books-content">
         <div>
-          <Bookshelf></Bookshelf>
-          <Bookshelf></Bookshelf>
-          <Bookshelf></Bookshelf>
+          <Bookshelf books={books}></Bookshelf>
+          <Bookshelf books={books}></Bookshelf>
+          <Bookshelf books={books}></Bookshelf>
         </div>
       </div>
       <div className="open-search">
@@ -18,6 +19,10 @@ const ListBooks = () => {
       </div>
     </div>
   );
+};
+
+ListBooks.propTypes = {
+  books: PropTypes.array.isRequired,
 };
 
 export default ListBooks;
