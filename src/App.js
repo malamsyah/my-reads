@@ -18,6 +18,19 @@ const App = () => {
     getBooks();
   }, []);
 
+  const handleUpdateShelf = (bookToUpdate, shelf) => {
+    BooksAPI.update(bookToUpdate, shelf).then((res) => {
+      const newBooks = books.map((book) => {
+        if (book.id === bookToUpdate.id) {
+          book.shelf = shelf;
+        }
+        return book;
+      });
+
+      setBooks(newBooks);
+    });
+  };
+
   const groups = [
     { shelf: "currentlyReading", name: "Currently Reading" },
     { shelf: "wantToRead", name: "Want to Read" },
@@ -30,7 +43,13 @@ const App = () => {
         <Route
           exact
           path="/"
-          element={<ListBooks books={books} groups={groups} />}
+          element={
+            <ListBooks
+              books={books}
+              groups={groups}
+              onUpdateShelf={handleUpdateShelf}
+            />
+          }
         />
       </Routes>
     </div>

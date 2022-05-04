@@ -1,7 +1,7 @@
 import Bookshelf from "./Bookshelf";
 import PropTypes from "prop-types";
 
-const ListBooks = ({ books, groups }) => {
+const ListBooks = ({ books, groups, onUpdateShelf }) => {
   const filterBooksByShelf = (group) => {
     return books.filter((book) => book.shelf === group.shelf);
   };
@@ -18,6 +18,7 @@ const ListBooks = ({ books, groups }) => {
               key={group.shelf}
               books={filterBooksByShelf(group)}
               group={group}
+              onUpdateShelf={onUpdateShelf}
             ></Bookshelf>
           ))}
         </div>
@@ -32,6 +33,7 @@ const ListBooks = ({ books, groups }) => {
 ListBooks.propTypes = {
   books: PropTypes.array.isRequired,
   groups: PropTypes.array.isRequired,
+  onUpdateShelf: PropTypes.func.isRequired,
 };
 
 export default ListBooks;

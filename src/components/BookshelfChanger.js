@@ -1,11 +1,12 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 
-const BookshelfChanger = ({ group }) => {
+const BookshelfChanger = ({ group, book, onUpdateShelf }) => {
   const [shelf, setShelf] = useState(group.shelf);
 
   const handleOnChange = (event) => {
     setShelf({ value: event.target.value });
-    console.log(event);
+    onUpdateShelf(book, event.target.value);
   };
 
   return (
@@ -21,6 +22,12 @@ const BookshelfChanger = ({ group }) => {
       </select>
     </div>
   );
+};
+
+BookshelfChanger.propTypes = {
+  book: PropTypes.object.isRequired,
+  group: PropTypes.object.isRequired,
+  onUpdateShelf: PropTypes.func.isRequired,
 };
 
 export default BookshelfChanger;

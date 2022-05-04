@@ -1,7 +1,7 @@
 import BookshelfChanger from "./BookshelfChanger";
 import PropTypes from "prop-types";
 
-const Book = ({ book, group }) => {
+const Book = ({ book, group, onUpdateShelf }) => {
   return (
     <li>
       <div className="book">
@@ -16,7 +16,11 @@ const Book = ({ book, group }) => {
               })`,
             }}
           ></div>
-          <BookshelfChanger group={group}></BookshelfChanger>
+          <BookshelfChanger
+            group={group}
+            book={book}
+            onUpdateShelf={onUpdateShelf}
+          ></BookshelfChanger>
         </div>
         <div className="book-title">{book.title}</div>
         <div className="book-authors">
@@ -30,6 +34,7 @@ const Book = ({ book, group }) => {
 Book.propTypes = {
   book: PropTypes.object.isRequired,
   group: PropTypes.object.isRequired,
+  onUpdateShelf: PropTypes.func.isRequired,
 };
 
 export default Book;
