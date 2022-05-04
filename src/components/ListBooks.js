@@ -1,5 +1,6 @@
 import Bookshelf from "./Bookshelf";
 import PropTypes from "prop-types";
+import OpenSearch from "./OpenSearch";
 
 const ListBooks = ({ books, groups, onUpdateShelf }) => {
   const filterBooksByShelf = (group) => {
@@ -23,9 +24,7 @@ const ListBooks = ({ books, groups, onUpdateShelf }) => {
           ))}
         </div>
       </div>
-      <div className="open-search">
-        <a onClick={() => console.log("open-search")}>Add a book</a>
-      </div>
+      <OpenSearch />
     </div>
   );
 };
