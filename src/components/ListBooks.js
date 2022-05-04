@@ -1,7 +1,11 @@
 import Bookshelf from "./Bookshelf";
 import PropTypes from "prop-types";
 
-const ListBooks = ({ books }) => {
+const ListBooks = ({ books, groups }) => {
+  const filterBooksByShelf = (group) => {
+    return books.filter((book) => book.shelf === group.shelf);
+  };
+
   return (
     <div className="list-books">
       <div className="list-books-title">
@@ -9,9 +13,13 @@ const ListBooks = ({ books }) => {
       </div>
       <div className="list-books-content">
         <div>
-          <Bookshelf books={books}></Bookshelf>
-          <Bookshelf books={books}></Bookshelf>
-          <Bookshelf books={books}></Bookshelf>
+          {groups.map((group) => (
+            <Bookshelf
+              key={group.shelf}
+              books={filterBooksByShelf(group)}
+              group={group}
+            ></Bookshelf>
+          ))}
         </div>
       </div>
       <div className="open-search">
@@ -23,6 +31,7 @@ const ListBooks = ({ books }) => {
 
 ListBooks.propTypes = {
   books: PropTypes.array.isRequired,
+  groups: PropTypes.array.isRequired,
 };
 
 export default ListBooks;

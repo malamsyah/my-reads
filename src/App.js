@@ -18,10 +18,20 @@ const App = () => {
     getBooks();
   }, []);
 
+  const groups = [
+    { shelf: "currentlyReading", name: "Currently Reading" },
+    { shelf: "wantToRead", name: "Want to Read" },
+    { shelf: "read", name: "Read" },
+  ];
+
   return (
     <div className="app">
       <Routes>
-        <Route exact path="/" element={<ListBooks books={books} />} />
+        <Route
+          exact
+          path="/"
+          element={<ListBooks books={books} groups={groups} />}
+        />
       </Routes>
     </div>
   );
