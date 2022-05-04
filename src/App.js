@@ -12,7 +12,7 @@ const App = () => {
     const getBooks = async () => {
       const res = await BooksAPI.getAll();
 
-      console.log(res);
+      // console.log(res);
       setBooks(res);
     };
 

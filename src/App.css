@@ -104,6 +104,8 @@ body,
   background-repeat: no-repeat;
   background-size: 28px;
   font-size: 0;
+  padding: 0;
+  border: none;
 }
 
 .search-books-results {
