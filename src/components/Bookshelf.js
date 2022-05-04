@@ -11,7 +11,6 @@ const Bookshelf = ({ books, group, onUpdateShelf }) => {
             <Book
               key={book.id}
               book={book}
-              group={group}
               onUpdateShelf={onUpdateShelf}
             ></Book>
           ))}

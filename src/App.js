@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import * as BooksAPI from "./apis/BooksAPI";
 import ListBooks from "./components/ListBooks";
+import SearchBooks from "./components/SearchBooks";
 
 const App = () => {
   const [books, setBooks] = useState([]);
@@ -40,6 +41,12 @@ const App = () => {
   return (
     <div className="app">
       <Routes>
+        <Route
+          path="/search"
+          element={
+            <SearchBooks books={books} onUpdateShelf={handleUpdateShelf} />
+          }
+        />
         <Route
           exact
           path="/"
