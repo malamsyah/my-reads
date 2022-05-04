@@ -1,11 +1,6 @@
 import "./App.css";
 import { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  useRoutes,
-} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import * as BooksAPI from "./apis/BooksAPI";
 import ListBooks from "./components/ListBooks";
 
@@ -23,17 +18,13 @@ const App = () => {
     getBooks();
   }, []);
 
-  let routes = useRoutes([{ path: "/", element: <ListBooks /> }]);
-
-  return routes;
-};
-
-const AppWrapper = () => {
   return (
-    <Router>
-      <App />
-    </Router>
+    <div className="app">
+      <Routes>
+        <Route exact path="/" element={<ListBooks books={books} />} />
+      </Routes>
+    </div>
   );
 };
 
-export default AppWrapper;
+export default App;
