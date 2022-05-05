@@ -6,39 +6,23 @@ import CloseSearch from "./CloseSearch";
 
 const SearchBooks = ({ books, onUpdateShelf }) => {
   const [searchResults, setSearchResults] = useState([]);
-  const [searchValue, setSearchValue] = useState("");
   const maxResults = 20;
 
-  useEffect(() => {
-    if (searchResults.length == 0) {
-      return;
-    }
-    var groupMap = new Map();
-    books.map((book) => {
-      groupMap.set(book.id, book.shelf);
-    });
+  const debounceSearchHandler = useCallback(
+    debounce((value, localBooks) => {
+      handleSearch(value, localBooks);
+    }, 250),
+    []
+  );
 
-    const newValue = searchResults.map((book) => {
-      if (groupMap.get(book.id)) {
-        book.shelf = groupMap.get(book.id);
-      } else {
-        book.shelf = "none";
-      }
-
-      return book;
-    });
-
-    setSearchResults(newValue);
-  }, [books]);
-
-  const debounceHandler = useCallback(
-    debounce((query) => {
-      BooksAPI.search(query, maxResults).then((res) => {
+  const handleSearch = (value, localBooks) => {
+    if (value.length > 0) {
+      BooksAPI.search(value, maxResults).then((res) => {
         if (res.error) {
           setSearchResults([]);
         } else {
           var groupMap = new Map();
-          books.map((book) => {
+          localBooks.map((book) => {
             groupMap.set(book.id, book.shelf);
           });
 
@@ -49,25 +33,16 @@ const SearchBooks = ({ books, onUpdateShelf }) => {
               book.shelf = "none";
             }
           });
+
           setSearchResults(res);
         }
       });
-    }, 1000),
-    []
-  );
-
-  const handleSearch = (event) => {
-    const value = event.target.value;
-    setSearchValue(value);
-    if (value.length > 0) {
-      debounceHandler(value);
     } else {
       setSearchResults([]);
     }
   };
 
   const handleCloseSearch = () => {
-    setSearchValue("");
     setSearchResults([]);
   };
 
@@ -79,8 +54,9 @@ const SearchBooks = ({ books, onUpdateShelf }) => {
           <input
             type="text"
             placeholder="Search by title, author, or ISBN"
-            value={searchValue}
-            onChange={handleSearch}
+            onChange={(e) => {
+              debounceSearchHandler(e.target.value, books);
+            }}
           />
         </div>
       </div>
