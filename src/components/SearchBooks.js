@@ -8,6 +8,23 @@ const SearchBooks = ({ books, onUpdateShelf }) => {
   const [searchResults, setSearchResults] = useState([]);
   const maxResults = 20;
 
+  useEffect(() => {
+    var groupMap = new Map();
+    books.map((book) => {
+      groupMap.set(book.id, book.shelf);
+    });
+
+    let updatedSearchResult = searchResults.map((book) => {
+      if (groupMap.get(book.id)) {
+        book.shelf = groupMap.get(book.id);
+      } else {
+        book.shelf = "none";
+      }
+      return book;
+    });
+    setSearchResults(updatedSearchResult);
+  }, [books]);
+
   const debounceSearchHandler = useCallback(
     debounce((value, localBooks) => {
       handleSearch(value, localBooks);
