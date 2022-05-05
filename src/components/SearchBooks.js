@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 import * as BooksAPI from "../apis/BooksAPI";
 import Book from "./Book";
 import { debounce } from "lodash";
@@ -6,15 +6,21 @@ import CloseSearch from "./CloseSearch";
 
 const SearchBooks = ({ books, onUpdateShelf }) => {
   const [searchResults, setSearchResults] = useState([]);
+  const [searchResultsWithCurrentData, setSearchResultsWithCurrentData] =
+    useState([]);
   const maxResults = 20;
 
   useEffect(() => {
-    var groupMap = new Map();
-    books.map((book) => {
+    if (searchResults.length === 0) {
+      setSearchResultsWithCurrentData([]);
+    }
+
+    let groupMap = new Map();
+    books.forEach((book) => {
       groupMap.set(book.id, book.shelf);
     });
 
-    let updatedSearchResult = searchResults.map((book) => {
+    const updatedSearchResult = searchResults.map((book) => {
       if (groupMap.get(book.id)) {
         book.shelf = groupMap.get(book.id);
       } else {
@@ -22,35 +28,17 @@ const SearchBooks = ({ books, onUpdateShelf }) => {
       }
       return book;
     });
-    setSearchResults(updatedSearchResult);
-  }, [books]);
 
-  const debounceSearchHandler = useCallback(
-    debounce((value, localBooks) => {
-      handleSearch(value, localBooks);
-    }, 250),
-    []
-  );
+    setSearchResultsWithCurrentData(updatedSearchResult);
+  }, [books, searchResults]);
 
-  const handleSearch = (value, localBooks) => {
+  const handleSearch = (value) => {
+    console.log(value);
     if (value.length > 0) {
       BooksAPI.search(value, maxResults).then((res) => {
         if (res.error) {
           setSearchResults([]);
         } else {
-          var groupMap = new Map();
-          localBooks.map((book) => {
-            groupMap.set(book.id, book.shelf);
-          });
-
-          res.forEach((book) => {
-            if (groupMap.get(book.id)) {
-              book.shelf = groupMap.get(book.id);
-            } else {
-              book.shelf = "none";
-            }
-          });
-
           setSearchResults(res);
         }
       });
@@ -58,6 +46,8 @@ const SearchBooks = ({ books, onUpdateShelf }) => {
       setSearchResults([]);
     }
   };
+
+  const debounceHandleChange = debounce((value) => handleSearch(value), 250);
 
   const handleCloseSearch = () => {
     setSearchResults([]);
@@ -72,14 +62,14 @@ const SearchBooks = ({ books, onUpdateShelf }) => {
             type="text"
             placeholder="Search by title, author, or ISBN"
             onChange={(e) => {
-              debounceSearchHandler(e.target.value, books);
+              debounceHandleChange(e.target.value);
             }}
           />
         </div>
       </div>
       <div className="search-books-results">
         <ol className="books-grid">
-          {searchResults.map((res) => (
+          {searchResultsWithCurrentData.map((res) => (
             <Book key={res.id} book={res} onUpdateShelf={onUpdateShelf}></Book>
           ))}
         </ol>
