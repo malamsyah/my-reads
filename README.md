@@ -1,6 +1,14 @@
 # My Reads: A Book Tracking App
 
-A web app to track your reading progress
+A web app to track your reading progress, current page:
+
+### Home Page
+
+This page contains all of your books group to `Currently Reading`, `Want to Read` and `Read`
+
+### Search Page
+
+On search page you can search and add a new book to your collection
 
 # Getting Started
 
